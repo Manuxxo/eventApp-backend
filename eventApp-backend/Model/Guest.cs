@@ -15,7 +15,5 @@ namespace eventApp_backend.Model
         [BsonElement("Email")]
         public string Email { get; set; }
 
-        [BsonElement("RSVP")]
-        public bool RSVP { get; set; }
     }
 }
