@@ -1,5 +1,6 @@
 ﻿using eventApp_backend.Model;
-using eventApp_backend.Services;
+using eventApp_backend.Model.Interface;
+using eventApp_backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eventApp_backend.Controllers
@@ -8,42 +9,39 @@ namespace eventApp_backend.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly EventService _eventService;
+        private IEventCollection db = new EventCollection();
 
-        public EventController(EventService eventService)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Get(string id)
         {
-            _eventService = eventService;
+            return Ok(await db.Get(id));
         }
+            
 
         [HttpGet]
-        public async Task<ActionResult<List<Event>>> Get() =>
-            await _eventService.GetAsync();
-
-        [HttpGet("{id:length(24)}")]
-        public async Task<ActionResult<Event>> Get(string id)
+        public async Task<ActionResult> GetAllEvents()
         {
-            var eventItem = await _eventService.GetAsync(id);
+            var eventItem = await db.GetAllEvents();
 
             if (eventItem == null)
             {
                 return NotFound();
             }
 
-            return eventItem;
+            return Ok(eventItem);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Event>> Create(Event newEvent)
+        public async Task<ActionResult> Create([FromBody] Event newEvent)
         {
-            await _eventService.CreateAsync(newEvent);
-
-            return CreatedAtAction(nameof(Get), new { id = newEvent.Id }, newEvent);
+            await db.Create(newEvent);
+            return Ok();
         }
 
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, Event updatedEvent)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id,[FromBody] Event updatedEvent)
         {
-            var eventItem = await _eventService.GetAsync(id);
+            var eventItem = await db.Get(id);
 
             if (eventItem == null)
             {
@@ -52,24 +50,24 @@ namespace eventApp_backend.Controllers
 
             updatedEvent.Id = eventItem.Id;
 
-            await _eventService.UpdateAsync(id, updatedEvent);
+            await db.Update(updatedEvent);
 
-            return NoContent();
+            return Ok();
         }
 
-        [HttpDelete("{id:length(24)}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var eventItem = await _eventService.GetAsync(id);
+            var eventItem = await db.Get(id);
 
             if (eventItem == null)
             {
                 return NotFound();
             }
 
-            await _eventService.RemoveAsync(eventItem.Id);
+            await db.Delete(id);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using eventApp_backend.Model;
-using eventApp_backend.Services;
+using eventApp_backend.Model.Interface;
+using eventApp_backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eventApp_backend.Controllers
@@ -8,47 +9,66 @@ namespace eventApp_backend.Controllers
     [ApiController]
     public class GuestController : ControllerBase
     {
-        private readonly GuestService _guestService;
 
-        public GuestController(GuestService guestService)
+        private IGuestCollection db = new GuestCollection();
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Get(string id)
         {
-            _guestService = guestService;
+            return Ok(await db.Get(id));
         }
 
-        [HttpPost("{eventId:length(24)}")]
-        public async Task<ActionResult<Guest>> AddGuest(string eventId, Guest newGuest)
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllGuests()
         {
-            var guest = await _guestService.AddGuestAsync(eventId, newGuest);
-            if (guest == null)
+            var guestItem = await db.GetAllGuests();
+
+            if (guestItem == null)
             {
                 return NotFound();
             }
 
-            return CreatedAtAction(nameof(AddGuest), new { eventId = eventId, guestId = newGuest.Id }, newGuest);
+            return Ok(guestItem);
         }
 
-        [HttpPut("{eventId:length(24)}/{guestId:length(24)}")]
-        public async Task<IActionResult> UpdateGuest(string eventId, string guestId, Guest updatedGuest)
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] Guest newGuest)
         {
-            var guest = await _guestService.UpdateGuestAsync(eventId, guestId, updatedGuest);
-            if (guest == null)
+            await db.Create(newGuest);
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] Guest updatedGuest)
+        {
+            var guestItem = await db.Get(id);
+
+            if (guestItem == null)
             {
                 return NotFound();
             }
 
-            return NoContent();
+            updatedGuest.Id = guestItem.Id;
+
+            await db.Update(updatedGuest);
+
+            return Ok();
         }
 
-        [HttpDelete("{eventId:length(24)}/{guestId:length(24)}")]
-        public async Task<IActionResult> RemoveGuest(string eventId, string guestId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
         {
-            var result = await _guestService.RemoveGuestAsync(eventId, guestId);
-            if (!result)
+            var guestItem = await db.Get(id);
+
+            if (guestItem == null)
             {
                 return NotFound();
             }
 
-            return NoContent();
+            await db.Delete(id);
+
+            return Ok();
         }
     }
     

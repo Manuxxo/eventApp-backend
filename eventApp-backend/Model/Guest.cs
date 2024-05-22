@@ -7,7 +7,7 @@ namespace eventApp_backend.Model
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
 
         [BsonElement("Name")]
         public string Name { get; set; }
