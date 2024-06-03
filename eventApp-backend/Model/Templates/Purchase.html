@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Compra</title>
+    <style>
+        .container {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+            .header img {
+                width: 100px;
+            }
+
+        .content {
+            margin-top: 20px;
+        }
+
+            .content h1 {
+                font-size: 24px;
+                color: #333;
+            }
+
+            .content p {
+                font-size: 16px;
+                color: #555;
+            }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{logo}}" alt="Logo">
+        </div>
+        <div class="content">
+            <h1>Hola, {{name}}!</h1>
+            <p>Gracias por comprar tu entrada para el evento {{eventName}}. Aquí tienes los detalles:</p>
+            <p><strong>Nombre:</strong> {{name}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Evento:</strong> {{eventName}}</p>
+            <p><strong>Fecha:</strong> {{eventDate}}</p>
+            <p><strong>Hora:</strong> {{eventTime}}</p>            
+        </div>
+        <div>
+            <p><strong>Haz click </strong><a href="{{eventLink}}">aquí</a> para entrar al evento</p>
+        </div>
+        <div class="footer">
+            <p>¡Nos vemos en el evento!</p>
+            <p>Equipo de Eventos</p>
+        </div>
+    </div>
+</body>
+</html>

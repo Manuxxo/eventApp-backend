@@ -1,27 +1,25 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.Text.Json.Serialization;
 
 namespace eventApp_backend.Model
 {
     public class Event
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
 
-        [BsonElement("Name")]
         public string Name { get; set; }
 
-        [BsonElement("Description")]
         public string Description { get; set; }
 
-        [BsonElement("Date")]
         public DateTime Date { get; set; }
 
-        [BsonElement("Location")]
         public string Location { get; set; }
+        public string Image { get; set; }
 
-        [BsonElement("Guests")]
+        public int Price { get; set; }
+
         public List<Guest> Guests { get; set; } = new List<Guest>();
     }
 }

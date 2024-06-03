@@ -6,14 +6,12 @@ namespace eventApp_backend.Model
     public class Guest
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
 
-        [BsonElement("Name")]
         public string Name { get; set; }
 
-        [BsonElement("Email")]
         public string Email { get; set; }
+        public string Status { get; set; }
 
     }
 }

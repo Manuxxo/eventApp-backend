@@ -15,21 +15,22 @@ namespace eventApp_backend.Repositories
             _guest = _repository.db.GetCollection<Guest>("Guest");
         }
 
-        public async Task Create(Guest newGuest)
+        public async Task<string> Create(Guest newGuest)
         {
+            newGuest.Id = Guid.NewGuid().ToString();
             await _guest.InsertOneAsync(newGuest);
+            return newGuest.Id;
         }
 
         public async Task Delete(string id)
-        {
-            var filter = Builders<Guest>.Filter.Eq(s => s.Id, new ObjectId(id));
-            await _guest.DeleteOneAsync(filter);
+        {            
+            await _guest.DeleteOneAsync(s => s.Id == id);
         }
 
         public async Task<Guest> Get(string id)
         {
             return await _guest.FindAsync(
-                new BsonDocument { { "_id", new ObjectId(id) } }).Result.FirstAsync();
+                new BsonDocument { { "_id", id } }).Result.FirstAsync();
         }
 
         public async Task<List<Guest>> GetAllGuests()

@@ -1,8 +1,13 @@
-﻿namespace eventApp_backend.Model
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
+namespace eventApp_backend.Model
 {
     public class User
     {
-        public int Id { get; set; }
+
+        [BsonId]
+        public string Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }

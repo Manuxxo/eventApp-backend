@@ -4,7 +4,7 @@
     {
         Task<Guest> Get(string id);
         Task<List<Guest>> GetAllGuests();
-        Task Create(Guest newGuest);
+        Task<string> Create(Guest newGuest);
         Task Update(Guest newGuest);
         Task Delete(string id);
     }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eventApp_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class GuestController : ControllerBase
     {
